@@ -33,7 +33,7 @@ import java.util.Properties;
 public class ConfigurationNotFoundException implements ConfigurationNotFoundStrategy {
 
     @Override
-    public Properties notFound() {
+    public final Properties notFound() {
         InitializationException.invalidConfigurationFile("Missing property file path");
         return null;
     }

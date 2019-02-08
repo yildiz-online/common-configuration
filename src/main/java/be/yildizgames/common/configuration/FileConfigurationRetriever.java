@@ -26,11 +26,16 @@
 
 package be.yildizgames.common.configuration;
 
+import be.yildizgames.common.configuration.parameter.ApplicationArgs;
+import be.yildizgames.common.configuration.parameter.DefaultArgName;
+import be.yildizgames.common.exception.implementation.ImplementationException;
 import be.yildizgames.common.file.FileProperties;
+import be.yildizgames.common.file.exception.FileMissingException;
 import be.yildizgames.common.logging.LogEngineFactory;
 import be.yildizgames.common.logging.PreLogger;
 
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Properties;
 
 class FileConfigurationRetriever implements ConfigurationRetriever {
@@ -40,15 +45,24 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
     private final ConfigurationNotFoundStrategy notFoundStrategy;
 
     FileConfigurationRetriever(ConfigurationNotFoundStrategy strategy) {
+        super();
+        ImplementationException.throwForNull(strategy);
         this.notFoundStrategy = strategy;
     }
 
     @Override
-    public Properties retrieveFromArgs(String[] args) {
-        if(args == null || args.length < 1) {
-            preLogger.warn("Configuration file not found");
-            return notFoundStrategy.notFound();
+    public Properties retrieveFromArgs(ApplicationArgs args) {
+        ImplementationException.throwForNull(args);
+        Optional<String> path = args.getArg(DefaultArgName.CONFIGURATION_FILE);
+        if(path.isEmpty()) {
+            this.preLogger.error("Configuration file not found");
+            return this.notFoundStrategy.notFound();
         }
-        return FileProperties.getPropertiesFromFile(Paths.get(args[0]));
+        try {
+            return FileProperties.getPropertiesFromFile(Paths.get(path.get()));
+        } catch (FileMissingException e) {
+            this.preLogger.error("Configuration file not found" , e);
+            return this.notFoundStrategy.notFound();
+        }
     }
 }

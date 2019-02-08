@@ -26,10 +26,18 @@
 
 package be.yildizgames.common.configuration;
 
+/**
+ * Factory to build the configuration retriever.
+ * @author Grégory Van den Borre
+ */
 public class ConfigurationRetrieverFactory {
 
+    /**
+     * Build a configuration retrieved from a file.
+     * @param strategy Behavior to fire when the file is not found.
+     * @return The configuration retriever.
+     */
     public static ConfigurationRetriever fromFile(ConfigurationNotFoundStrategy strategy) {
         return new FileConfigurationRetriever(strategy);
     }
-
 }

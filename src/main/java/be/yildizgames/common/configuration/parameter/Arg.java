@@ -24,43 +24,16 @@
  *
  */
 
-package be.yildizgames.common.configuration;
+package be.yildizgames.common.configuration.parameter;
 
-import be.yildizgames.common.exception.implementation.ImplementationException;
-import be.yildizgames.common.logging.LogEngineFactory;
-import be.yildizgames.common.logging.PreLogger;
+public class Arg {
 
-import java.util.Properties;
+    public final String key;
 
-/**
- * Provide default configuration values.
- * @author Grécory Van den Borre
- */
-public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrategy {
+    public final String value;
 
-    /**
-     * As the logger has not read its config, using prelogger.
-     */
-    private final PreLogger preLogger = LogEngineFactory.getLogEngine().getPrelogger();
-
-    /**
-     * Default properties to use.
-     */
-    private final Properties properties;
-
-    /**
-     * Create a new instance from a properties object.
-     * @param properties Default properties.
-     */
-    public ConfigurationNotFoundDefault(final Properties properties) {
-        super();
-        ImplementationException.throwForNull(properties);
-        this.properties = properties;
-    }
-
-    @Override
-    public final Properties notFound() {
-        preLogger.warn("Using default properties.");
-        return this.properties;
+    public Arg(String key, String value) {
+        this.key = key;
+        this.value = value;
     }
 }

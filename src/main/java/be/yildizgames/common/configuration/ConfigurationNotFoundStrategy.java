@@ -28,7 +28,14 @@ package be.yildizgames.common.configuration;
 
 import java.util.Properties;
 
+/**
+ * Behavior to fire when the configuration is not found.
+ */
 public interface ConfigurationNotFoundStrategy {
 
+    /**
+     * Properties to return.
+     * @return Some properties.
+     */
     Properties notFound();
 }
