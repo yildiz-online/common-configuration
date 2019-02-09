@@ -55,7 +55,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
         ImplementationException.throwForNull(args);
         Optional<String> path = args.getArg(DefaultArgName.CONFIGURATION_FILE);
         if(path.isEmpty()) {
-            this.preLogger.error("Configuration file not found");
+            this.preLogger.error("Configuration file not found, no application arg provider with 'configuration' key");
             return this.notFoundStrategy.notFound();
         }
         try {
