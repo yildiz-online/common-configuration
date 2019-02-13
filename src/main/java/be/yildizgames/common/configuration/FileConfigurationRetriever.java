@@ -31,7 +31,6 @@ import be.yildizgames.common.configuration.parameter.DefaultArgName;
 import be.yildizgames.common.exception.implementation.ImplementationException;
 import be.yildizgames.common.file.FileProperties;
 import be.yildizgames.common.file.exception.FileMissingException;
-import be.yildizgames.common.logging.LogEngineFactory;
 import be.yildizgames.common.logging.PreLogger;
 
 import java.nio.file.Paths;
@@ -40,14 +39,15 @@ import java.util.Properties;
 
 class FileConfigurationRetriever implements ConfigurationRetriever {
 
-    private final PreLogger preLogger = LogEngineFactory.getLogEngine().getPrelogger();
+    private final PreLogger preLogger;
 
     private final ConfigurationNotFoundStrategy notFoundStrategy;
 
-    FileConfigurationRetriever(ConfigurationNotFoundStrategy strategy) {
+    FileConfigurationRetriever(ConfigurationNotFoundStrategy strategy, PreLogger preLogger) {
         super();
         ImplementationException.throwForNull(strategy);
         this.notFoundStrategy = strategy;
+        this.preLogger = preLogger;
     }
 
     @Override

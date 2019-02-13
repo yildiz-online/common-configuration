@@ -26,6 +26,8 @@
 
 package be.yildizgames.common.configuration;
 
+import be.yildizgames.common.logging.PreLogger;
+
 /**
  * Factory to build the configuration retriever.
  * @author Grégory Van den Borre
@@ -35,9 +37,10 @@ public class ConfigurationRetrieverFactory {
     /**
      * Build a configuration retrieved from a file.
      * @param strategy Behavior to fire when the file is not found.
+     * @param preLogger Logger to use before the actual one is running.
      * @return The configuration retriever.
      */
-    public static ConfigurationRetriever fromFile(ConfigurationNotFoundStrategy strategy) {
-        return new FileConfigurationRetriever(strategy);
+    public static ConfigurationRetriever fromFile(ConfigurationNotFoundStrategy strategy, PreLogger preLogger) {
+        return new FileConfigurationRetriever(strategy, preLogger);
     }
 }
