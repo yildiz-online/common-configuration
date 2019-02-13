@@ -27,6 +27,7 @@
 package be.yildizgames.common.configuration;
 
 import be.yildizgames.common.exception.implementation.ImplementationException;
+import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.PreLogger;
 
 import java.util.Properties;
@@ -40,7 +41,7 @@ public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrate
     /**
      * As the logger has not read its config, using prelogger.
      */
-    private final PreLogger preLogger;
+    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
 
     /**
      * Default properties to use.
@@ -51,11 +52,10 @@ public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrate
      * Create a new instance from a properties object.
      * @param properties Default properties.
      */
-    public ConfigurationNotFoundDefault(final Properties properties, PreLogger preLogger) {
+    public ConfigurationNotFoundDefault(final Properties properties) {
         super();
         ImplementationException.throwForNull(properties);
         this.properties = properties;
-        this.preLogger = preLogger;
     }
 
     @Override

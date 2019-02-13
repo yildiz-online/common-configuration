@@ -26,7 +26,7 @@
 
 package be.yildizgames.common.configuration.parameter;
 
-import be.yildizgames.common.logging.LogEngineFactory;
+import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.PreLogger;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class ApplicationArgs {
     /**
      * As the logger has not read its config, using prelogger.
      */
-    private final PreLogger preLogger = LogEngineFactory.getLogEngine().getPrelogger();
+    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
 
     /**
      * List of key values arguments received.
