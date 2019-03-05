@@ -42,11 +42,6 @@ import java.util.Optional;
 public class ApplicationArgs {
 
     /**
-     * As the logger has not read its config, using prelogger.
-     */
-    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
-
-    /**
      * List of key values arguments received.
      */
     private final List<Arg> args = new ArrayList<>();
@@ -63,7 +58,7 @@ public class ApplicationArgs {
     private ApplicationArgs(String[] args) {
         super();
         if(args == null) {
-            preLogger.info("No args parameter passed to the application.");
+            LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger().info("No arg parameters passed to the application.");
         } else {
             for (String arg : args) {
                 String[] value = arg.split("=");
@@ -85,11 +80,20 @@ public class ApplicationArgs {
         return new ApplicationArgs(args);
     }
 
+    /**
+     * Provide tha application args.
+     * @return The application args.
+     */
     public final List<Arg> getArgs() {
         return Collections.unmodifiableList(args);
     }
 
-    public Optional<String> getArg(String key) {
+    /**
+     * Provide an argument depending from its key.
+     * @param key Argument key.
+     * @return The value matching the key.
+     */
+    public final Optional<String> getArg(String key) {
         return args
                 .stream()
                 .filter(arg -> arg.key.equalsIgnoreCase(key))
@@ -97,7 +101,7 @@ public class ApplicationArgs {
                 .findFirst();
     }
 
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.args.isEmpty();
     }
 }
