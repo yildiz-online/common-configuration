@@ -34,9 +34,19 @@ import be.yildizgames.common.file.exception.FileMissingException;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.PreLogger;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 class FileConfigurationRetriever implements ConfigurationRetriever {
 
@@ -58,8 +68,12 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             this.preLogger.error("Configuration file not found, no application arg provider with 'configuration' key");
             return this.notFoundStrategy.notFound();
         }
+        Properties properties;
         try {
-            return FileProperties.getPropertiesFromFile(Paths.get(path.get()));
+            Path configPath = Paths.get(path.get());
+            properties = FileProperties.getPropertiesFromFile(configPath);
+            ReloadableConfiguration reloadableConfiguration = new ReloadableConfiguration(properties, args);
+            return properties;
         } catch (FileMissingException e) {
             this.preLogger.error("Configuration file not found" , e);
             return this.notFoundStrategy.notFound();

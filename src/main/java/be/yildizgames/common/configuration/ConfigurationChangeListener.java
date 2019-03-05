@@ -26,19 +26,5 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.configuration.parameter.ApplicationArgs;
-
-import java.util.Properties;
-
-/**
- * Provide the properties from the configuration.
- */
-public interface ConfigurationRetriever {
-
-    /**
-     * Retrieved properties.
-     * @param args
-     * @return
-     */
-    Properties retrieveFromArgs(ApplicationArgs args);
+public interface ConfigurationChangeListener {
 }

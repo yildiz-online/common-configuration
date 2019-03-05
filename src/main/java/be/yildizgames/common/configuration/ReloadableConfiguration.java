@@ -30,15 +30,13 @@ import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 
 import java.util.Properties;
 
-/**
- * Provide the properties from the configuration.
- */
-public interface ConfigurationRetriever {
+public class ReloadableConfiguration {
 
-    /**
-     * Retrieved properties.
-     * @param args
-     * @return
-     */
-    Properties retrieveFromArgs(ApplicationArgs args);
+    private Properties current;
+
+    public ReloadableConfiguration(Properties properties, ApplicationArgs args) {
+        super();
+        this.current = properties;
+
+    }
 }
