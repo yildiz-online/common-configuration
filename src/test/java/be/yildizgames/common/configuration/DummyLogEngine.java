@@ -26,42 +26,31 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.exception.implementation.ImplementationException;
-import be.yildizgames.common.logging.LogEngineProvider;
+import be.yildizgames.common.logging.LogEngine;
+import be.yildizgames.common.logging.LoggerConfiguration;
+import be.yildizgames.common.logging.PatternBuilder;
 import be.yildizgames.common.logging.PreLogger;
 
-import java.util.Objects;
-import java.util.Properties;
+import java.io.IOException;
 
-/**
- * Provide default configuration values.
- * @author Grécory Van den Borre
- */
-public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrategy {
-
-    /**
-     * As the logger has not read its config, using prelogger.
-     */
-    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
-
-    /**
-     * Default properties to use.
-     */
-    private final Properties properties;
-
-    /**
-     * Create a new instance from a properties object.
-     * @param properties Default properties.
-     */
-    public ConfigurationNotFoundDefault(final Properties properties) {
-        super();
-        Objects.requireNonNull(properties);
-        this.properties = properties;
+public class DummyLogEngine implements LogEngine {
+    @Override
+    public PatternBuilder createPatternBuilder() {
+        return null;
     }
 
     @Override
-    public final Properties notFound() {
-        preLogger.warn("Using default properties.");
-        return this.properties;
+    public void setConfigurationPath(String s) {
+
+    }
+
+    @Override
+    public void configureFromProperties(LoggerConfiguration loggerConfiguration) throws IOException {
+
+    }
+
+    @Override
+    public PreLogger getPrelogger() {
+        return new PreLogger();
     }
 }

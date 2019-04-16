@@ -26,42 +26,30 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.exception.implementation.ImplementationException;
-import be.yildizgames.common.logging.LogEngineProvider;
-import be.yildizgames.common.logging.PreLogger;
+import be.yildizgames.common.logging.LoggerLevel;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
-import java.util.Objects;
-import java.util.Properties;
+public class PropertyEntryTest {
 
-/**
- * Provide default configuration values.
- * @author Grécory Van den Borre
- */
-public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrategy {
+    @Nested
+    public class Constructor {
 
-    /**
-     * As the logger has not read its config, using prelogger.
-     */
-    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
+        @Test
+        public void loggerLevel() {
+            PropertyEntry entry = PropertyEntry.loggerLevel(LoggerLevel.ERROR);
+            Assertions.assertEquals("logger.level", entry.key);
+            Assertions.assertEquals("ERROR", entry.value);
+        }
 
-    /**
-     * Default properties to use.
-     */
-    private final Properties properties;
+        @Test
+        public void createDatabase() {
+            PropertyEntry entry = PropertyEntry.createDatabase();
+            Assertions.assertEquals("database.create", entry.key);
+            Assertions.assertEquals("true", entry.value);
+        }
 
-    /**
-     * Create a new instance from a properties object.
-     * @param properties Default properties.
-     */
-    public ConfigurationNotFoundDefault(final Properties properties) {
-        super();
-        Objects.requireNonNull(properties);
-        this.properties = properties;
     }
 
-    @Override
-    public final Properties notFound() {
-        preLogger.warn("Using default properties.");
-        return this.properties;
-    }
 }

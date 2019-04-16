@@ -26,42 +26,23 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.exception.implementation.ImplementationException;
-import be.yildizgames.common.logging.LogEngineProvider;
-import be.yildizgames.common.logging.PreLogger;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
-import java.util.Objects;
 import java.util.Properties;
 
-/**
- * Provide default configuration values.
- * @author Grécory Van den Borre
- */
-public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrategy {
+public class ConfigurationNotFoundDefaultTest {
 
-    /**
-     * As the logger has not read its config, using prelogger.
-     */
-    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
+    @Nested
+    public class Constructor {
 
-    /**
-     * Default properties to use.
-     */
-    private final Properties properties;
-
-    /**
-     * Create a new instance from a properties object.
-     * @param properties Default properties.
-     */
-    public ConfigurationNotFoundDefault(final Properties properties) {
-        super();
-        Objects.requireNonNull(properties);
-        this.properties = properties;
-    }
-
-    @Override
-    public final Properties notFound() {
-        preLogger.warn("Using default properties.");
-        return this.properties;
+        @Test
+        public void happyFlow() {
+            Properties properties = new Properties();
+            properties.put("test", "test123");
+            ConfigurationNotFoundDefault config = new ConfigurationNotFoundDefault(properties);
+            Assertions.assertEquals("test123", config.notFound().getProperty("test"));
+        }
     }
 }

@@ -29,6 +29,8 @@ package be.yildizgames.common.configuration;
 import be.yildizgames.common.exception.implementation.ImplementationException;
 import be.yildizgames.common.logging.LoggerLevel;
 
+import java.util.Objects;
+
 /**
  * A value of a properties object, used usually to override values.
  */
@@ -40,14 +42,13 @@ public class PropertyEntry {
 
     private PropertyEntry(String key, String value) {
         super();
-        ImplementationException.throwForNull(key);
-        ImplementationException.throwForNull(value);
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
         this.key = key;
         this.value = value;
     }
 
     public static PropertyEntry loggerLevel(LoggerLevel value) {
-        ImplementationException.throwForNull(value);
         return new PropertyEntry("logger.level", value.name());
     }
 
