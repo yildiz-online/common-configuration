@@ -33,7 +33,7 @@
   <url>https://bitbucket.org/yildiz-engine-team/common-time</url>
 
   <artifactId>common-configuration</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
 
   <packaging>jar</packaging>
   <inceptionYear>2017</inceptionYear>
