@@ -26,6 +26,10 @@
 
 package be.yildizgames.common.configuration.parameter;
 
+/**
+ * Argument passed to the application.
+ * @author Grégory Van den Borre
+ */
 public class Arg {
 
     public final String key;

@@ -101,6 +101,10 @@ public class ApplicationArgs {
                 .findFirst();
     }
 
+    /**
+     * Check if there is no argument.
+     * @return true if no argument has been passed, false otherwise.
+     */
     public final boolean isEmpty() {
         return this.args.isEmpty();
     }
