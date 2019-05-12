@@ -26,13 +26,13 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.exception.implementation.ImplementationException;
 import be.yildizgames.common.logging.LoggerLevel;
 
 import java.util.Objects;
 
 /**
  * A value of a properties object, used usually to override values.
+ * @author Grégory Van den Borre
  */
 public class PropertyEntry {
 

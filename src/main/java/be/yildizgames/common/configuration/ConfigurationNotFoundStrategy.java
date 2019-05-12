@@ -30,6 +30,7 @@ import java.util.Properties;
 
 /**
  * Behavior to fire when the configuration is not found.
+ * @author Grégory Van den Borre
  */
 public interface ConfigurationNotFoundStrategy {
 

@@ -29,6 +29,9 @@ package be.yildizgames.common.configuration;
 import be.yildizgames.common.logging.LogEngine;
 import be.yildizgames.common.logging.LogEngineProvider;
 
+/**
+ * @author Grégory Van den Borre
+ */
 public class DummyLogEngineProvider implements LogEngineProvider {
 
     @Override

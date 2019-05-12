@@ -30,6 +30,9 @@ import be.yildizgames.common.exception.initialization.InitializationException;
 
 import java.util.Properties;
 
+/**
+ * @author Grégory Van den Borre
+ */
 public class ConfigurationNotFoundException implements ConfigurationNotFoundStrategy {
 
     @Override

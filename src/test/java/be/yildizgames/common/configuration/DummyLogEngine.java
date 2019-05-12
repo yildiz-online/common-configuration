@@ -33,6 +33,9 @@ import be.yildizgames.common.logging.PreLogger;
 
 import java.io.IOException;
 
+/**
+ * @author Grégory Van den Borre
+ */
 public class DummyLogEngine implements LogEngine {
     @Override
     public PatternBuilder createPatternBuilder() {

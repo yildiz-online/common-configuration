@@ -26,6 +26,9 @@
 
 package be.yildizgames.common.configuration.parameter;
 
+/**
+ * @author Grégory Van den Borre
+ */
 public class DefaultArgName {
 
     public static final String CONFIGURATION_FILE = "configuration";

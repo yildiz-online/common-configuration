@@ -32,6 +32,8 @@ import java.util.Properties;
 
 /**
  * Provide the properties from the configuration.
+ *
+ * @author Grégory Van den Borre
  */
 public interface ConfigurationRetriever {
 

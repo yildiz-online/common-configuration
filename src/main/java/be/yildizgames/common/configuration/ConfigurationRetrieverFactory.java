@@ -28,6 +28,7 @@ package be.yildizgames.common.configuration;
 
 /**
  * Factory to build the configuration retriever.
+ *
  * @author Grégory Van den Borre
  */
 public class ConfigurationRetrieverFactory {

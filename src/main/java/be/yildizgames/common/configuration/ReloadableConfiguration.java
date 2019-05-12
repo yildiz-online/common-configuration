@@ -30,6 +30,9 @@ import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 
 import java.util.Properties;
 
+/**
+ * @author Grégory Van den Borre
+ */
 public class ReloadableConfiguration {
 
     private Properties current;
@@ -37,6 +40,5 @@ public class ReloadableConfiguration {
     public ReloadableConfiguration(Properties properties, ApplicationArgs args) {
         super();
         this.current = properties;
-
     }
 }

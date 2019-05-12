@@ -26,5 +26,8 @@
 
 package be.yildizgames.common.configuration;
 
+/**
+ * @author Grégory Van den Borre
+ */
 public interface ConfigurationChangeListener {
 }

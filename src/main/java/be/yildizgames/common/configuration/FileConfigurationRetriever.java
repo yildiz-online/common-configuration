@@ -34,20 +34,14 @@ import be.yildizgames.common.file.exception.FileMissingException;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.PreLogger;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
-
+/**
+ * @author Grégory Van den Borre
+ */
 class FileConfigurationRetriever implements ConfigurationRetriever {
 
     private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();

@@ -26,18 +26,10 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.configuration.parameter.ApplicationArgs;
-import be.yildizgames.common.configuration.parameter.DefaultArgName;
-import be.yildizgames.common.exception.implementation.ImplementationException;
-import be.yildizgames.common.exception.initialization.InitializationException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Properties;
 
 /**
  * @author Grégory Van den Borre
