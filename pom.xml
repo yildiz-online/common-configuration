@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <name>Yildiz Common Configuration</name>
   <description>Common Configuration library for the yildiz project, contains utilities to handle configuration.</description>
-  <url>https://bitbucket.org/yildiz-engine-team/common-time</url>
+  <url>https://engine.yildiz-games.be</url>
 
   <artifactId>common-configuration</artifactId>
   <version>1.0.5-SNAPSHOT</version>
@@ -37,9 +37,9 @@
   <packaging>jar</packaging>
   <inceptionYear>2017</inceptionYear>
   <scm>
-    <connection>scm:git:https://bitbucket.org/yildiz-engine-team/common-configuration</connection>
-    <developerConnection>scm:git:https://bitbucket.org/yildiz-engine-team/common-configuration</developerConnection>
-    <url>https://bitbucket.org/yildiz-engine-team/common-configuration</url>
+    <connection>scm:git:https://github.com/yildiz-online/common-configuration</connection>
+    <developerConnection>scm:git:https://github.com/yildiz-online/common-configuration</developerConnection>
+    <url>https://github.com/yildiz-online/common-configuration</url>
   </scm>
   <parent>
     <artifactId>parent</artifactId>
