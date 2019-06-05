@@ -22,12 +22,19 @@
  *
  */
 
-module be.yildizgames.common.configuration {
+package be.yildizgames.common.configuration;
 
-    requires be.yildizgames.common.logging;
-    requires be.yildizgames.common.file;
+public class PropertiesException extends IllegalStateException {
 
-    exports be.yildizgames.common.configuration;
-    exports be.yildizgames.common.configuration.parameter;
+    PropertiesException(String message, Exception cause) {
+        super(message, cause);
+    }
+
+    PropertiesException(Exception cause) {
+        super(cause);
+    }
+
+    PropertiesException(String s) {
+        super(s);
+    }
 }
-

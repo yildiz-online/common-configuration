@@ -28,14 +28,13 @@ package be.yildizgames.common.configuration;
 
 import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 import be.yildizgames.common.configuration.parameter.DefaultArgName;
-import be.yildizgames.common.exception.implementation.ImplementationException;
 import be.yildizgames.common.file.FileProperties;
-import be.yildizgames.common.file.exception.FileMissingException;
 import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.PreLogger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -50,13 +49,12 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
 
     FileConfigurationRetriever(ConfigurationNotFoundStrategy strategy) {
         super();
-        ImplementationException.throwForNull(strategy);
+        Objects.requireNonNull(strategy);
         this.notFoundStrategy = strategy;
     }
 
     @Override
     public Properties retrieveFromArgs(ApplicationArgs args) {
-        ImplementationException.throwForNull(args);
         Optional<String> path = args.getArg(DefaultArgName.CONFIGURATION_FILE);
         if(path.isEmpty()) {
             this.preLogger.error("Configuration file not found, no application arg provider with 'configuration' key");
@@ -68,7 +66,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             properties = FileProperties.getPropertiesFromFile(configPath);
             ReloadableConfiguration reloadableConfiguration = new ReloadableConfiguration(properties, args);
             return properties;
-        } catch (FileMissingException e) {
+        } catch (IllegalStateException e) {
             this.preLogger.error("Configuration file not found" , e);
             return this.notFoundStrategy.notFound();
         }

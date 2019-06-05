@@ -26,8 +26,6 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.exception.initialization.InitializationException;
-
 import java.util.Properties;
 
 /**
@@ -37,7 +35,6 @@ public class ConfigurationNotFoundException implements ConfigurationNotFoundStra
 
     @Override
     public final Properties notFound() {
-        InitializationException.invalidConfigurationFile("Missing property file path");
-        return null;
+        throw new IllegalStateException("Missing property file path");
     }
 }
