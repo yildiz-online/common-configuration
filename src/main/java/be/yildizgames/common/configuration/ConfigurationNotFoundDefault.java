@@ -52,10 +52,28 @@ public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrate
      * Create a new instance from a properties object.
      * @param properties Default properties.
      */
-    public ConfigurationNotFoundDefault(final Properties properties) {
+    private ConfigurationNotFoundDefault(final Properties properties) {
         super();
+        this.preLogger.info("Loading properties failed, fallback to default values.");
         Objects.requireNonNull(properties);
         this.properties = properties;
+    }
+
+    /**
+     * Create a new instance from a properties object.
+     * @param properties Default properties.
+     */
+    private ConfigurationNotFoundDefault(final Properties properties, ConfigurationNotFoundAdditionalBehavior behavior) {
+        this(properties);
+        behavior.execute();
+    }
+
+    public static ConfigurationNotFoundStrategy fromDefault(Properties properties) {
+        return new ConfigurationNotFoundDefault(properties);
+    }
+
+    public static ConfigurationNotFoundStrategy fromDefault(Properties properties, ConfigurationNotFoundAdditionalBehavior behavior) {
+        return new ConfigurationNotFoundDefault(properties, behavior);
     }
 
     @Override

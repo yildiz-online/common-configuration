@@ -43,4 +43,6 @@ public interface ConfigurationRetriever {
      * @return
      */
     Properties retrieveFromArgs(ApplicationArgs args);
+
+    void onReload(ConfigurationReloadedBehavior behavior);
 }

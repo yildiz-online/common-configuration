@@ -46,6 +46,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
     private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
 
     private final ConfigurationNotFoundStrategy notFoundStrategy;
+    private Path configPath;
 
     FileConfigurationRetriever(ConfigurationNotFoundStrategy strategy) {
         super();
@@ -55,6 +56,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
 
     @Override
     public Properties retrieveFromArgs(ApplicationArgs args) {
+        this.preLogger.info("Loading properties.");
         Optional<String> path = args.getArg(DefaultArgName.CONFIGURATION_FILE);
         if(path.isEmpty()) {
             this.preLogger.error("Configuration file not found, no application arg provider with 'configuration' key");
@@ -62,13 +64,19 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
         }
         Properties properties;
         try {
-            Path configPath = Paths.get(path.get());
-            properties = FileProperties.getPropertiesFromFile(configPath);
-            ReloadableConfiguration reloadableConfiguration = new ReloadableConfiguration(properties, args);
+            this.configPath = Paths.get(path.get());
+            properties = FileProperties.getPropertiesFromFile(this.configPath);
+            //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
             return properties;
         } catch (IllegalStateException e) {
             this.preLogger.error("Configuration file not found" , e);
             return this.notFoundStrategy.notFound();
         }
+    }
+
+    @Override
+    public final void onReload(ConfigurationReloadedBehavior behavior) {
+        Optional.ofNullable(configPath)
+                .ifPresent(path -> new FileReloadableConfiguration(this.configPath, behavior).inspect());
     }
 }

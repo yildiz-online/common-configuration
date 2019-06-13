@@ -23,22 +23,12 @@
  *
  *
  */
-
 package be.yildizgames.common.configuration;
-
-import be.yildizgames.common.configuration.parameter.ApplicationArgs;
-
-import java.util.Properties;
 
 /**
  * @author Grégory Van den Borre
  */
-public class ReloadableConfiguration {
+public interface ConfigurationReloadedBehavior {
 
-    private Properties current;
-
-    public ReloadableConfiguration(Properties properties, ApplicationArgs args) {
-        super();
-        this.current = properties;
-    }
+    void reload();
 }
