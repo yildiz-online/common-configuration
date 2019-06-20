@@ -39,8 +39,8 @@ public interface ConfigurationRetriever {
 
     /**
      * Retrieved properties.
-     * @param args
-     * @return
+     * @param args Argument to build properties from.
+     * @return The created properties.
      */
     Properties retrieveFromArgs(ApplicationArgs args);
 

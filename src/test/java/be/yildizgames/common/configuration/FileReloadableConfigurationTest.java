@@ -2,8 +2,6 @@ package be.yildizgames.common.configuration;
 
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Paths;
-
 public class FileReloadableConfigurationTest {
 
     @Test
