@@ -57,23 +57,37 @@ public class FileReloadableConfiguration {
     }
 
     void inspect(int max) {
-        try {
-            int current = 0;
-            WatchService watcher = FileSystems.getDefault().newWatchService();
-            this.path.getParent().register(watcher, ENTRY_MODIFY);
+        new Thread(new Reloader(max)).start();
+    }
+
+    private class Reloader implements Runnable {
+
+        private final int max;
+
+        public Reloader(int max) {
+            this.max = max;
+        }
+
+        @Override
+        public void run() {
             try {
-                WatchKey key;
-                while (current < max && (key = watcher.take()) != null) {
-                    for (WatchEvent<?> event : key.pollEvents()) {
-                        this.behavior.reload();
+                int current = 0;
+                WatchService watcher = FileSystems.getDefault().newWatchService();
+                path.getParent().register(watcher, ENTRY_MODIFY);
+                try {
+                    WatchKey key;
+                    while (current < this.max && (key = watcher.take()) != null) {
+                        for (WatchEvent<?> event : key.pollEvents()) {
+                            behavior.reload();
+                        }
+                        key.reset();
+                        current++;
                     }
-                    key.reset();
-                    current++;
+                } catch (InterruptedException x) {
                 }
-            } catch (InterruptedException x) {
+            } catch(IOException e){
+                e.printStackTrace();
             }
-        } catch(IOException e){
-            e.printStackTrace();
         }
     }
 }
