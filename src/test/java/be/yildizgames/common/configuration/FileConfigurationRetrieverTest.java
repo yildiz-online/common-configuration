@@ -26,10 +26,16 @@
 
 package be.yildizgames.common.configuration;
 
+import be.yildizgames.common.configuration.parameter.ApplicationArgs;
+import be.yildizgames.common.configuration.parameter.DefaultArgName;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Properties;
 
 /**
  * @author Grégory Van den Borre
@@ -38,13 +44,13 @@ public class FileConfigurationRetrieverTest {
 
     @Test
     public void happyFlow() {
-       // ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
-       // Assertions.assertNotNull(retriever);
+        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+        Assertions.assertNotNull(retriever);
     }
 
     @Test
     public void withNullParameter() {
-        //Assertions.assertThrows(ImplementationException.class, () -> new FileConfigurationRetriever(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new FileConfigurationRetriever(null));
     }
 
     @Nested
@@ -52,45 +58,45 @@ public class FileConfigurationRetrieverTest {
 
         @Test
         public void happyFlow() throws IOException {
-           /* Path config = Files.createTempFile("config",".properties");
+            Path config = Files.createTempFile("config",".properties");
             Properties properties = new Properties();
             properties.put("value", "test");
             properties.store(Files.newBufferedWriter(config), "Test properties");
             ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
             Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
-            Assertions.assertEquals("test", result.getProperty("value"));*/
+            Assertions.assertEquals("test", result.getProperty("value"));
         }
 
         @Test
         public void fileNotFound() {
-          //  ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
-          //  Assertions.assertThrows(InitializationException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=invalid/path/config.properties")));
+            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+            Assertions.assertThrows(IllegalStateException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=invalid/path/config.properties")));
         }
 
         @Test
         public void applicationArgsNull() {
-           // ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
-           // Assertions.assertThrows(ImplementationException.class, () -> retriever.retrieveFromArgs(null));
+            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+            Assertions.assertThrows(NullPointerException.class, () -> retriever.retrieveFromArgs(null));
         }
 
         @Test
         public void argsEmpty() throws IOException {
-          /*  Path config = Files.createTempFile("config",".properties");
+            Path config = Files.createTempFile("config",".properties");
             Properties properties = new Properties();
             properties.put("value", "test");
             properties.store(Files.newBufferedWriter(config), "Test properties");
             ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
-            Assertions.assertThrows(InitializationException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of()));*/
+            Assertions.assertThrows(IllegalStateException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of()));
         }
 
         @Test
         public void argsNull() throws IOException {
-           /* Path config = Files.createTempFile("config",".properties");
+            Path config = Files.createTempFile("config",".properties");
             Properties properties = new Properties();
             properties.put("value", "test");
             properties.store(Files.newBufferedWriter(config), "Test properties");
             ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
-            Assertions.assertThrows(InitializationException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of((String[]) null)));*/
+            Assertions.assertThrows(IllegalStateException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of((String[]) null)));
         }
 
     }

@@ -34,4 +34,11 @@ public class DefaultArgName {
     public static final String CONFIGURATION_FILE = "configuration";
 
     public static final String CONFIGURATION_CHECK = "configuration-check";
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private DefaultArgName() {
+        super();
+    }
 }

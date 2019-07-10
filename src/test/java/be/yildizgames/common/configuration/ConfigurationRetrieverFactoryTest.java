@@ -26,6 +26,7 @@
 
 package be.yildizgames.common.configuration;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -35,7 +36,7 @@ public class ConfigurationRetrieverFactoryTest {
 
     @Test
     public void happyFlow() {
-        /*ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory.fromFile(new ConfigurationNotFoundException());
-        Assertions.assertNotNull(configurationRetriever);*/
+        ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory.fromFile(new ConfigurationNotFoundException());
+        Assertions.assertNotNull(configurationRetriever);
     }
 }

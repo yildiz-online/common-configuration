@@ -26,7 +26,7 @@
 
 package be.yildizgames.common.configuration.parameter;
 
-import be.yildizgames.common.logging.LogEngineProvider;
+import be.yildizgames.common.logging.PreLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +57,7 @@ public class ApplicationArgs {
     private ApplicationArgs(String[] args) {
         super();
         if(args == null) {
-            LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger().info("No arg parameters passed to the application.");
+            new PreLogger().info("No arg parameters passed to the application.");
         } else {
             for (String arg : args) {
                 String[] value = arg.split("=");

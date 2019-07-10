@@ -26,8 +26,11 @@
 
 package be.yildizgames.common.configuration;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Properties;
 
 public class ConfigurationNotFoundDefaultTest {
 
@@ -36,10 +39,10 @@ public class ConfigurationNotFoundDefaultTest {
 
         @Test
         public void happyFlow() {
-           /* Properties properties = new Properties();
+            Properties properties = new Properties();
             properties.put("test", "test123");
-            ConfigurationNotFoundDefault config = new ConfigurationNotFoundDefault(properties);
-            Assertions.assertEquals("test123", config.notFound().getProperty("test"));*/
+            ConfigurationNotFoundStrategy config = ConfigurationNotFoundDefault.fromDefault(properties);
+            Assertions.assertEquals("test123", config.notFound().getProperty("test"));
         }
     }
 }

@@ -29,7 +29,6 @@ package be.yildizgames.common.configuration;
 import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 import be.yildizgames.common.configuration.parameter.DefaultArgName;
 import be.yildizgames.common.file.FileProperties;
-import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.PreLogger;
 
 import java.nio.file.Path;
@@ -43,7 +42,7 @@ import java.util.Properties;
  */
 class FileConfigurationRetriever implements ConfigurationRetriever {
 
-    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
+    private final PreLogger preLogger = new PreLogger();
 
     private final ConfigurationNotFoundStrategy notFoundStrategy;
     private Path configPath;
@@ -56,10 +55,10 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
 
     @Override
     public Properties retrieveFromArgs(ApplicationArgs args) {
-        this.preLogger.info("Loading properties.");
+        this.preLogger.info("Loading configuration file...");
         Optional<String> path = args.getArg(DefaultArgName.CONFIGURATION_FILE);
         if(path.isEmpty()) {
-            this.preLogger.error("Configuration file not found, no application arg provider with 'configuration' key");
+            this.preLogger.error("Configuration file not found, no application arg provider with '" + DefaultArgName.CONFIGURATION_FILE + "' key");
             return this.notFoundStrategy.notFound();
         }
         Properties properties;
@@ -67,6 +66,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             this.configPath = Paths.get(path.get());
             properties = FileProperties.getPropertiesFromFile(this.configPath);
             //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
+            this.preLogger.info("Loading configuration file success.");
             return properties;
         } catch (IllegalStateException e) {
             this.preLogger.error("Configuration file not found" , e);

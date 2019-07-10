@@ -26,7 +26,6 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.logging.LogEngineProvider;
 import be.yildizgames.common.logging.PreLogger;
 
 import java.util.Objects;
@@ -41,7 +40,7 @@ public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrate
     /**
      * As the logger has not read its config, using prelogger.
      */
-    private final PreLogger preLogger = LogEngineProvider.getLoggerProvider().getLogEngine().getPrelogger();
+    private final PreLogger preLogger = new PreLogger();
 
     /**
      * Default properties to use.
