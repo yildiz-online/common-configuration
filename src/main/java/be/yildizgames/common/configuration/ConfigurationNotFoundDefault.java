@@ -53,7 +53,6 @@ public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrate
      */
     private ConfigurationNotFoundDefault(final Properties properties) {
         super();
-        this.preLogger.info("Loading properties failed, fallback to default values.");
         Objects.requireNonNull(properties);
         this.properties = properties;
     }
@@ -77,7 +76,7 @@ public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrate
 
     @Override
     public final Properties notFound() {
-        preLogger.warn("Using default properties.");
+        this.preLogger.info("Loading properties failed, fallback to default values.");
         return this.properties;
     }
 }
