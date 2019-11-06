@@ -39,4 +39,6 @@ public interface ConfigurationNotFoundStrategy {
      * @return Some properties.
      */
     Properties notFound();
+
+    Properties getProperties();
 }

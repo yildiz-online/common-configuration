@@ -70,7 +70,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             properties = FileProperties.getPropertiesFromFile(this.configPath);
             //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
             this.preLogger.info("Loading configuration file success.");
-            Properties[] p = {this.notFoundStrategy.notFound(), properties};
+            Properties[] p = {this.notFoundStrategy.getProperties(), properties};
             return Arrays.stream(p)
                     .collect(Properties::new, Map::putAll, Map::putAll);
         } catch (IllegalStateException e) {

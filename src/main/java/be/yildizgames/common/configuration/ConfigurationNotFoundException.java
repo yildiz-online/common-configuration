@@ -37,4 +37,9 @@ public class ConfigurationNotFoundException implements ConfigurationNotFoundStra
     public final Properties notFound() {
         throw new IllegalStateException("Missing property file path");
     }
+
+    @Override
+    public Properties getProperties() {
+        return new Properties();
+    }
 }

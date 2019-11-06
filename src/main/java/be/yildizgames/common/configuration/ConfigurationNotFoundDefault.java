@@ -79,4 +79,8 @@ public class ConfigurationNotFoundDefault implements ConfigurationNotFoundStrate
         this.preLogger.info("Loading properties failed, fallback to default values.");
         return this.properties;
     }
+
+    public Properties getProperties() {
+        return this.properties;
+    }
 }
