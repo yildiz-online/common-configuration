@@ -34,9 +34,7 @@ import be.yildizgames.common.logging.PreLogger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Grégory Van den Borre
@@ -72,7 +70,9 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             properties = FileProperties.getPropertiesFromFile(this.configPath);
             //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
             this.preLogger.info("Loading configuration file success.");
-            return properties;
+            Properties[] p = {this.notFoundStrategy.notFound(), properties};
+            return Arrays.stream(p)
+                    .collect(Properties::new, Map::putAll, Map::putAll);
         } catch (IllegalStateException e) {
             this.preLogger.error("Configuration file not found" , e);
             return this.notFoundStrategy.notFound();
