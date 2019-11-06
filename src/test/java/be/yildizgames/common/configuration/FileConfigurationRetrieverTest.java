@@ -49,6 +49,23 @@ public class FileConfigurationRetrieverTest {
     }
 
     @Test
+    public void fileExistWithPropertyOnlyInDefault() throws IOException {
+        Properties p = new Properties();
+        p.put("default", "true");
+        p.put("defaultOnly", "true");
+
+        Path config = Files.createTempFile("config",".properties");
+        Properties properties = new Properties();
+        properties.put("default", "false");
+        properties.store(Files.newBufferedWriter(config), "Test properties");
+
+        ConfigurationRetriever retriever = new FileConfigurationRetriever(ConfigurationNotFoundDefault.fromDefault(p));
+        Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
+        Assertions.assertEquals("true", result.getProperty("defaultOnly"));
+        Assertions.assertEquals("false", result.getProperty("default"));
+    }
+
+    @Test
     public void withNullParameter() {
         Assertions.assertThrows(NullPointerException.class, () -> new FileConfigurationRetriever(null));
     }

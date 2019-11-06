@@ -31,10 +31,15 @@ import be.yildizgames.common.configuration.parameter.DefaultArgName;
 import be.yildizgames.common.file.FileProperties;
 import be.yildizgames.common.logging.PreLogger;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  * @author Grégory Van den Borre
@@ -65,17 +70,23 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             }
         }
         Properties properties;
+        Properties result = new Properties();
         try {
             this.configPath = Paths.get(path.get());
             properties = FileProperties.getPropertiesFromFile(this.configPath);
-            //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
             this.preLogger.info("Loading configuration file success.");
             Properties[] p = {this.notFoundStrategy.getProperties(), properties};
-            return Arrays.stream(p)
-                    .collect(Properties::new, Map::putAll, Map::putAll);
+            Arrays.stream(p).forEach(result::putAll);
+            result.store(Files.newBufferedWriter(this.configPath,
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), "Properties");
+            //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
+            return result;
         } catch (IllegalStateException e) {
-            this.preLogger.error("Configuration file not found" , e);
+            this.preLogger.error("Configuration file not found", e);
             return this.notFoundStrategy.notFound();
+        } catch (IOException e) {
+            this.preLogger.error("Error writing configuration file", e);
+            return result;
         }
     }
 
