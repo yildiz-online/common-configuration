@@ -66,7 +66,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             Path defaultConfigFile = Paths.get("configuration.properties");
             if(Files.notExists(defaultConfigFile)) {
                 this.preLogger.warn("Configuration file not found, default configuration file 'configuration.properties' was not found and no application arg provider with '" + DefaultArgName.CONFIGURATION_FILE + "' key");
-                return this.notFoundStrategy.notFound();
+                return this.storeConfiguration(this.notFoundStrategy.notFound());
             }
         }
         Properties properties;
@@ -77,17 +77,22 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             this.preLogger.info("Loading configuration file success.");
             Properties[] p = {this.notFoundStrategy.getProperties(), properties};
             Arrays.stream(p).forEach(result::putAll);
-            result.store(Files.newBufferedWriter(this.configPath,
-                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), "Properties");
+            return this.storeConfiguration(result);
             //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
-            return result;
         } catch (IllegalStateException e) {
             this.preLogger.error("Configuration file not found", e);
             return this.notFoundStrategy.notFound();
+        }
+    }
+
+    private Properties storeConfiguration(final Properties result) {
+        try {
+            result.store(Files.newBufferedWriter(this.configPath,
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), "Properties");
         } catch (IOException e) {
             this.preLogger.error("Error writing configuration file", e);
-            return result;
         }
+        return result;
     }
 
     @Override
