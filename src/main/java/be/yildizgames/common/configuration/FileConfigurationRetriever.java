@@ -64,6 +64,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
         if(path.isEmpty()) {
             path = Optional.of("configuration.properties");
             Path defaultConfigFile = Paths.get("configuration.properties");
+            this.configPath = defaultConfigFile;
             if(Files.notExists(defaultConfigFile)) {
                 this.preLogger.warn("Configuration file not found, default configuration file 'configuration.properties' was not found and no application arg provider with '" + DefaultArgName.CONFIGURATION_FILE + "' key");
                 return this.storeConfiguration(this.notFoundStrategy.notFound());
