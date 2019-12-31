@@ -26,10 +26,10 @@
 
 package be.yildizgames.common.configuration;
 
+import be.yildizgames.common.configuration.logger.PreLogger;
 import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 import be.yildizgames.common.configuration.parameter.DefaultArgName;
 import be.yildizgames.common.file.FileProperties;
-import be.yildizgames.common.logging.PreLogger;
 
 import java.io.IOException;
 import java.nio.file.Files;

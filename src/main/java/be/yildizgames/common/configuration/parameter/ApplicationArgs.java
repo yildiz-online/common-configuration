@@ -26,7 +26,7 @@
 
 package be.yildizgames.common.configuration.parameter;
 
-import be.yildizgames.common.logging.PreLogger;
+import be.yildizgames.common.configuration.logger.PreLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -24,7 +24,6 @@
 
 module be.yildizgames.common.configuration {
 
-    requires be.yildizgames.common.logging;
     requires be.yildizgames.common.file;
 
     exports be.yildizgames.common.configuration;

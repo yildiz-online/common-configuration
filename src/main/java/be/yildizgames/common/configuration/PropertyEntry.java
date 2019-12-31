@@ -26,8 +26,6 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.logging.LoggerLevel;
-
 import java.util.Objects;
 
 /**
@@ -46,10 +44,6 @@ public class PropertyEntry {
         Objects.requireNonNull(value);
         this.key = key;
         this.value = value;
-    }
-
-    public static PropertyEntry loggerLevel(LoggerLevel value) {
-        return new PropertyEntry("logger.level", value.name());
     }
 
     public static PropertyEntry createDatabase() {

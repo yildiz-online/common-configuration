@@ -26,7 +26,6 @@
 
 package be.yildizgames.common.configuration;
 
-import be.yildizgames.common.logging.LoggerLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -38,13 +37,6 @@ public class PropertyEntryTest {
 
     @Nested
     public class Constructor {
-
-        @Test
-        public void loggerLevel() {
-            PropertyEntry entry = PropertyEntry.loggerLevel(LoggerLevel.ERROR);
-            Assertions.assertEquals("logger.level", entry.key);
-            Assertions.assertEquals("ERROR", entry.value);
-        }
 
         @Test
         public void createDatabase() {
