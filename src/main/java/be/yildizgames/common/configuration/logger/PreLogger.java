@@ -48,7 +48,7 @@ public class PreLogger {
      * @param message Message to display.
      */
     public final void info(final String message) {
-        this.print(" | INFO | be.yildizgames.common.logging.Prelogger | " + message);
+        this.print(" | INFO | be.yildizgames.common.application.Prelogger | " + message);
     }
 
     /**
@@ -56,7 +56,7 @@ public class PreLogger {
      * @param message Message to display.
      */
     public final void warn(final String message) {
-        this.print(" | WARN | be.yildizgames.common.logging.Prelogger | " + message);
+        this.print(" | WARN | be.yildizgames.common.application.Prelogger | " + message);
     }
 
     /**
@@ -64,7 +64,7 @@ public class PreLogger {
      * @param message Message to display.
      */
     public final void error(final String message) {
-        this.print(" | ERROR| be.yildizgames.common.logging.Prelogger | " + message);
+        this.print(" | ERROR| be.yildizgames.common.application.Prelogger | " + message);
     }
 
     /**
@@ -73,8 +73,8 @@ public class PreLogger {
      * @param e Exception to print stacktrace.
      */
     public final void error(final String message, final Exception e) {
-        this.print(" | ERROR| be.yildizgames.common.logging.Prelogger | " + message);
-        this.print(" | ERROR| be.yildizgames.common.logging.Prelogger | " + e.getMessage());
+        this.print(" | ERROR| be.yildizgames.common.application.Prelogger | " + message);
+        this.print(" | ERROR| be.yildizgames.common.application.Prelogger | " + e.getMessage());
         e.printStackTrace(System.out);
     }
 
