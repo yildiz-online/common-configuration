@@ -29,14 +29,17 @@ package be.yildizgames.common.configuration;
 import be.yildizgames.common.configuration.logger.PreLogger;
 import be.yildizgames.common.configuration.parameter.ApplicationArgs;
 import be.yildizgames.common.configuration.parameter.DefaultArgName;
-import be.yildizgames.common.file.FileProperties;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
@@ -72,9 +75,10 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
         }
         Properties properties;
         Properties result = new Properties();
+
         try {
             this.configPath = Paths.get(path.get());
-            properties = FileProperties.getPropertiesFromFile(this.configPath);
+            properties = getPropertiesFromFile(this.configPath);
             this.preLogger.info("Loading configuration file success.");
             Properties[] p = {this.notFoundStrategy.getProperties(), properties};
             Arrays.stream(p).forEach(result::putAll);
@@ -88,6 +92,29 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
 
     private Properties storeConfiguration(final Properties result) {
         try {
+            List<String> invalid = new ArrayList<>();
+            result.forEach((k, v) -> {
+                if(v.toString().contains("\t")
+                        || v.toString().contains("\r")
+                        || v.toString().contains("\n")
+                        || v.toString().contains("\b")
+                        || v.toString().contains("\f")
+                        || v.toString().contains("\\")
+                ) {
+                    invalid.add(k.toString());
+                }
+                    });
+            invalid.forEach(k -> {
+                String v = result.getProperty(k);
+                result.setProperty(k, v
+                        .replace("\t", "/t")
+                        .replace("\r", "/r")
+                        .replace("\n", "/n")
+                        .replace("\b", "/b")
+                        .replace("\f", "/f")
+                        .replace("\\", "/")
+                );
+            });
             result.store(Files.newBufferedWriter(this.configPath,
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), "Properties");
         } catch (IOException e) {
@@ -100,5 +127,26 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
     public final void onReload(ConfigurationReloadedBehavior behavior) {
         Optional.ofNullable(configPath)
                 .ifPresent(path -> new FileReloadableConfiguration(this.configPath, behavior).inspect());
+    }
+
+    private static Properties getPropertiesFromFile(final Path file, final String... args) {
+        final Properties properties = new Properties();
+        try (Reader reader = Files.newBufferedReader(file, StandardCharsets.ISO_8859_1)) {
+            properties.load(reader);
+        } catch (IOException ioe) {
+            throw new IllegalStateException("Error while reading property file: " + file.toAbsolutePath().toString(), ioe);
+        }
+        if (args == null) {
+            return properties;
+        }
+        for (String pair : args) {
+            if (pair != null && pair.contains("=")) {
+                String[] values = pair.split("=");
+                if (properties.containsKey(values[0])) {
+                    properties.setProperty(values[0], values[1]);
+                }
+            }
+        }
+        return properties;
     }
 }
