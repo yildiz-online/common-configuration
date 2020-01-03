@@ -33,13 +33,13 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Grégory Van den Borre
  */
-public class PropertyEntryTest {
+class PropertyEntryTest {
 
     @Nested
-    public class Constructor {
+    class Constructor {
 
         @Test
-        public void createDatabase() {
+        void createDatabase() {
             PropertyEntry entry = PropertyEntry.createDatabase();
             Assertions.assertEquals("database.create", entry.key);
             Assertions.assertEquals("true", entry.value);

@@ -32,6 +32,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,16 +42,36 @@ import java.util.Properties;
 /**
  * @author Grégory Van den Borre
  */
-public class FileConfigurationRetrieverTest {
+class FileConfigurationRetrieverTest {
 
     @Test
-    public void happyFlow() {
+    void happyFlow() {
         ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
         Assertions.assertNotNull(retriever);
     }
 
     @Test
-    public void fileExistWithPropertyOnlyInDefault() throws IOException {
+    void fileWithBackslashes() throws IOException {
+        Properties properties = new Properties();
+        properties.setProperty("logger.pattern", "%d{yyyy/MM/dd HH:mm:ss} | %level | %logger | %msg%n");
+        properties.setProperty("logger.level", "info");
+        properties.setProperty("logger.output", "file");
+        properties.setProperty("logger.tcp.host", "localhost");
+        properties.setProperty("logger.tcp.port", "12345");
+        properties.setProperty("logger.file.output", "C:\test");
+        properties.setProperty("logger.configuration.file", new File("").getAbsolutePath() + "/temp/");
+        properties.setProperty("logger.disabled", "azerty,qwerty");
+        properties.store(new FileWriter(new File("p.properties")),"");
+        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+        Path config = Files.createTempFile("configBS",".properties");
+        properties.store(Files.newBufferedWriter(config), "Test properties");
+        Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
+        System.out.println(config);
+        result.forEach((k,v) -> System.out.println(k + " = " + v));
+    }
+
+    @Test
+    void fileExistWithPropertyOnlyInDefault() throws IOException {
         Properties p = new Properties();
         p.put("default", "true");
         p.put("defaultOnly", "true");
@@ -66,15 +88,15 @@ public class FileConfigurationRetrieverTest {
     }
 
     @Test
-    public void withNullParameter() {
+    void withNullParameter() {
         Assertions.assertThrows(NullPointerException.class, () -> new FileConfigurationRetriever(null));
     }
 
     @Nested
-    public class FromArgs {
+    class FromArgs {
 
         @Test
-        public void happyFlow() throws IOException {
+        void happyFlow() throws IOException {
             Path config = Files.createTempFile("config",".properties");
             Properties properties = new Properties();
             properties.put("value", "test");
@@ -85,19 +107,19 @@ public class FileConfigurationRetrieverTest {
         }
 
         @Test
-        public void fileNotFound() {
+        void fileNotFound() {
             ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
             Assertions.assertThrows(IllegalStateException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=invalid/path/config.properties")));
         }
 
         @Test
-        public void applicationArgsNull() {
+        void applicationArgsNull() {
             ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
             Assertions.assertThrows(NullPointerException.class, () -> retriever.retrieveFromArgs(null));
         }
 
         @Test
-        public void argsEmpty() throws IOException {
+        void argsEmpty() throws IOException {
             Path config = Files.createTempFile("config",".properties");
             Properties properties = new Properties();
             properties.put("value", "test");
@@ -107,7 +129,7 @@ public class FileConfigurationRetrieverTest {
         }
 
         @Test
-        public void argsNull() throws IOException {
+        void argsNull() throws IOException {
             Path config = Files.createTempFile("config",".properties");
             Properties properties = new Properties();
             properties.put("value", "test");

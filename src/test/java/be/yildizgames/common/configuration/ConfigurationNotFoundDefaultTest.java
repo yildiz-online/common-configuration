@@ -32,13 +32,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-public class ConfigurationNotFoundDefaultTest {
+class ConfigurationNotFoundDefaultTest {
 
     @Nested
-    public class Constructor {
+    class Constructor {
 
         @Test
-        public void happyFlow() {
+        void happyFlow() {
             Properties properties = new Properties();
             properties.put("test", "test123");
             ConfigurationNotFoundStrategy config = ConfigurationNotFoundDefault.fromDefault(properties);

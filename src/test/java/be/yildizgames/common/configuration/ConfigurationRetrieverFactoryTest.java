@@ -32,10 +32,10 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Grégory Van den Borre
  */
-public class ConfigurationRetrieverFactoryTest {
+class ConfigurationRetrieverFactoryTest {
 
     @Test
-    public void happyFlow() {
+    void happyFlow() {
         ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory.fromFile(new ConfigurationNotFoundException());
         Assertions.assertNotNull(configurationRetriever);
     }

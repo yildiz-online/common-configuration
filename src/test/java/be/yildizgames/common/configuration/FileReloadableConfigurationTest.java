@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FileReloadableConfigurationTest {
+class FileReloadableConfigurationTest {
 
     private boolean run = false;
 
     @Disabled
     @Test
-    public void happyFlow() throws IOException, InterruptedException {
+    void happyFlow() throws IOException, InterruptedException {
         this.run = false;
         Path config = Files.createTempFile("test" + System.currentTimeMillis(), ".txt");
         FileReloadableConfiguration configuration = new FileReloadableConfiguration(config, this::run);
