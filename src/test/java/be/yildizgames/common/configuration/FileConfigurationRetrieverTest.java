@@ -66,8 +66,6 @@ class FileConfigurationRetrieverTest {
         Path config = Files.createTempFile("configBS",".properties");
         properties.store(Files.newBufferedWriter(config), "Test properties");
         Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
-        System.out.println(config);
-        result.forEach((k,v) -> System.out.println(k + " = " + v));
     }
 
     @Test
