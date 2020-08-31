@@ -115,6 +115,10 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
                         .replace("\\", "/")
                 );
             });
+            Path dir = Path.of("config");
+            if(Files.notExists(dir) || !Files.isDirectory(dir)) {
+                Files.createDirectory(dir);
+            }
             result.store(Files.newBufferedWriter(this.configPath,
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), "Properties");
         } catch (IOException e) {
