@@ -72,9 +72,10 @@ class FileConfigurationRetrieverTest {
     void testEncoding() throws IOException {
         Properties properties = new Properties();
         properties.setProperty("test", "éèç");
-        properties.store(new FileWriter("test.properties"),"");
+        Path config = Files.createTempFile("configTE",".properties");
+        properties.store(Files.newBufferedWriter(config),"");
         ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
-        Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=test.properties"));
+        Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
         Assertions.assertEquals("éèç", result.getProperty("test"));
     }
 
