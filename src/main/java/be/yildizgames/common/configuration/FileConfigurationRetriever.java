@@ -32,7 +32,6 @@ import be.yildizgames.common.configuration.parameter.DefaultArgName;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -135,7 +134,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
 
     private static Properties getPropertiesFromFile(final Path file, final String... args) {
         final Properties properties = new Properties();
-        try (Reader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+        try (Reader reader = Files.newBufferedReader(file)) {
             properties.load(reader);
         } catch (IOException ioe) {
             throw new IllegalStateException("Error while reading property file: " + file.toAbsolutePath().toString(), ioe);
