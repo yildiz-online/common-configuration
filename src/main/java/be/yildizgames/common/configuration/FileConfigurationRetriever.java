@@ -135,7 +135,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
 
     private static Properties getPropertiesFromFile(final Path file, final String... args) {
         final Properties properties = new Properties();
-        try (Reader reader = Files.newBufferedReader(file, StandardCharsets.ISO_8859_1)) {
+        try (Reader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             properties.load(reader);
         } catch (IOException ioe) {
             throw new IllegalStateException("Error while reading property file: " + file.toAbsolutePath().toString(), ioe);

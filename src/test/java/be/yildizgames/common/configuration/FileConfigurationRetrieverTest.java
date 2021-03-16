@@ -61,11 +61,21 @@ class FileConfigurationRetrieverTest {
         properties.setProperty("logger.file.output", "C:\test");
         properties.setProperty("logger.configuration.file", new File("").getAbsolutePath() + "/temp/");
         properties.setProperty("logger.disabled", "azerty,qwerty");
-        properties.store(new FileWriter(new File("p.properties")),"");
+        properties.store(new FileWriter("p.properties"),"");
         ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
         Path config = Files.createTempFile("configBS",".properties");
         properties.store(Files.newBufferedWriter(config), "Test properties");
         Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
+    }
+
+    @Test
+    void testEncoding() throws IOException {
+        Properties properties = new Properties();
+        properties.setProperty("test", "éèç");
+        properties.store(new FileWriter("test.properties"),"");
+        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+        Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=test.properties"));
+        Assertions.assertEquals("éèç", result.getProperty("test"));
     }
 
     @Test
