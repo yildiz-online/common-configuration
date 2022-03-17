@@ -16,13 +16,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
 /**
  * @author Grégory Van den Borre
  */
-public class BaseConfiguration {
+public class BaseConfiguration implements LanguageConfiguration {
 
     public static final String FRENCH = "Français";
 
@@ -34,37 +37,87 @@ public class BaseConfiguration {
 
     public static final String LANGUAGE = "language";
 
+    private final List<ConfigurationChangeListener> listeners = new ArrayList<>();
+
+    private final List<LocaleChangedListener> localeChangedListeners = new ArrayList<>();
+
+    private final List<Locale> supportedLocales = new ArrayList<>();
+
     private final Properties properties;
 
     public BaseConfiguration(Properties properties) {
-        super();
-        this.properties = properties;
+        this(properties, List.of(Locale.ENGLISH));
     }
 
-    public final Locale getLanguage() {
+    public BaseConfiguration(Properties properties, List<Locale> supportedLocales) {
+        super();
+        this.properties = properties;
+        this.supportedLocales.addAll(supportedLocales);
+    }
+
+    protected final String get(String key) {
+        return this.properties.getProperty(key);
+    }
+
+    protected final String get(String key, String defaultValue) {
+        return this.properties.getProperty(key, defaultValue);
+    }
+
+    public final void addLocaleChangedListener(LocaleChangedListener listener) {
+        this.localeChangedListeners.add(listener);
+    }
+
+    public final void addConfigurationChangedListener(ConfigurationChangeListener listener) {
+        this.listeners.add(listener);
+    }
+
+    @Override
+    public final Locale getLocale() {
         return Locale.forLanguageTag(this.properties.getProperty(LANGUAGE, "fr"));
     }
 
-    public final void setLanguage(Locale locale) {
-        this.properties.setProperty(LANGUAGE, locale.getLanguage());
-        this.store();
+    @Override
+    public final List<Locale> getSupportedLocale() {
+        return Collections.unmodifiableList(this.supportedLocales);
     }
 
-    public final void store() {
+    @Override
+    public final void setLocale(Locale locale) {
+        this.properties.setProperty(LANGUAGE, locale.getLanguage());
+        this.store();
+        this.localeChangedListeners.forEach(l -> l.setLanguage(locale));
+    }
+
+    protected final void store() {
         try (var buf = Files.newBufferedWriter(Path.of("config/configuration.properties"),
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)){
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
             this.properties.store(buf, "Properties");
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
+    protected final void updateValue(String changedProperty, String newValue) {
+        this.properties.setProperty(changedProperty, newValue);
+        this.store();
+        this.listeners.stream()
+                .filter(l -> l.getUsedConfigurationProperties().contains(changedProperty))
+                .forEach(l -> l.onChange(changedProperty, newValue));
+    }
+
     public final boolean isEulaAccepted(String expectedHash) {
         return this.properties.getProperty(EULA_ACCEPTED).equals(expectedHash);
     }
 
-    public final void setEulaAccepted(String hash) {
-        this.properties.setProperty(EULA_ACCEPTED, hash);
+    public final boolean setEulaAccepted(String hash) {
+        try {
+            this.properties.setProperty(EULA_ACCEPTED, hash);
+            this.store();
+            return true;
+        } catch (IllegalStateException e) {
+            System.getLogger(this.getClass().getName()).log(System.Logger.Level.ERROR, e);
+            return false;
+        }
     }
 
     public final void setEulaNotAccepted() {
