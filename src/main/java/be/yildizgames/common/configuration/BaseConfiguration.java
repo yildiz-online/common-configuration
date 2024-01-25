@@ -92,7 +92,7 @@ public class BaseConfiguration implements LanguageConfiguration {
     }
 
     protected final void store() {
-        try (var buf = Files.newBufferedWriter(Path.of("config/configuration.properties"),
+        try (var buf = Files.newBufferedWriter(getConfigFile(),
                 StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
             this.properties.store(buf, "Properties");
         } catch (IOException e) {
@@ -112,6 +112,11 @@ public class BaseConfiguration implements LanguageConfiguration {
         return this.properties.getProperty(EULA_ACCEPTED).equals(expectedHash);
     }
 
+    /**
+     * Set the EULA as accepted.
+     * @param hash Hash of the eula to ensure it is the right one accepted.
+     * @return True if process went well, false otherwise
+     */
     public final boolean setEulaAccepted(String hash) {
         try {
             this.properties.setProperty(EULA_ACCEPTED, hash);
@@ -123,7 +128,19 @@ public class BaseConfiguration implements LanguageConfiguration {
         }
     }
 
+    /**
+     * Set the EULA as not accepted.
+     */
     public final void setEulaNotAccepted() {
         this.properties.setProperty(EULA_ACCEPTED, "0");
+    }
+
+    /**
+     * Get the path to the configuration file.
+     * This function can be overridden to change the location of the configuration file.
+     * @return The path to the configuration file.
+     */
+    protected Path getConfigFile() {
+        return Path.of("config/configuration.properties");
     }
 }
