@@ -18,13 +18,7 @@ Project website:
 https://engine.yildiz-games.be
 
 Issue tracker:
-https://yildiz.atlassian.net/browse/
-
-Wiki:
-https://yildiz.atlassian.net/wiki
-
-Quality report:
-https://sonarcloud.io/dashboard/index/be.yildiz-games:common-configuration
+https://github.com/yildiz-online/common-configuration/issues
 
 ## License
 
@@ -49,7 +43,7 @@ In your maven project, add the dependency
 <dependency>
     <groupId>be.yildiz-games</groupId>
     <artifactId>common-configuration</artifactId>
-    <version>${project.version}</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
