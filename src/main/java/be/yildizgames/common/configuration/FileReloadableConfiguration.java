@@ -73,7 +73,7 @@ public class FileReloadableConfiguration {
                 } catch (InterruptedException x) {
                 }
             } catch(IOException e){
-                e.printStackTrace();
+                   System.getLogger(this.getClass().getName()).log(System.Logger.Level.ERROR, "", e);
             }
         }
     }
