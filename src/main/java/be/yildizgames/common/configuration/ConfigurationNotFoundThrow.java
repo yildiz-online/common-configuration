@@ -20,7 +20,7 @@ import java.util.Properties;
 /**
  * @author Grégory Van den Borre
  */
-public class ConfigurationNotFoundException implements ConfigurationNotFoundStrategy {
+public class ConfigurationNotFoundThrow implements ConfigurationNotFoundStrategy {
 
     @Override
     public final Properties notFound() {

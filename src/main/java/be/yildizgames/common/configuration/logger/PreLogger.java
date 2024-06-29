@@ -12,7 +12,6 @@
  OR COPYRIGHT  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 package be.yildizgames.common.configuration.logger;
 
 import java.text.DateFormat;
@@ -27,6 +26,11 @@ import java.util.Date;
  */
 public class PreLogger {
 
+    private static final String INFO = " | INFO | ";
+    private static final String WARN = " | WARN | ";
+    private static final String ERROR = " | ERROR| ";
+    private static final String CLASS = "be.yildizgames.common.logging.Prelogger | ";
+
     /**
      * To format the time displayed with the message.
      */
@@ -37,7 +41,7 @@ public class PreLogger {
      * @param message Message to display.
      */
     public final void info(final String message) {
-        this.print(" | INFO | be.yildizgames.common.application.Prelogger | " + message);
+        this.print(INFO + CLASS + message);
     }
 
     /**
@@ -45,7 +49,7 @@ public class PreLogger {
      * @param message Message to display.
      */
     public final void warn(final String message) {
-        this.print(" | WARN | be.yildizgames.common.application.Prelogger | " + message);
+        this.print(WARN + CLASS + message);
     }
 
     /**
@@ -53,7 +57,7 @@ public class PreLogger {
      * @param message Message to display.
      */
     public final void error(final String message) {
-        this.print(" | ERROR| be.yildizgames.common.application.Prelogger | " + message);
+        this.print(ERROR + CLASS + message);
     }
 
     /**
@@ -62,8 +66,8 @@ public class PreLogger {
      * @param e Exception to print stacktrace.
      */
     public final void error(final String message, final Exception e) {
-        this.print(" | ERROR| be.yildizgames.common.application.Prelogger | " + message);
-        this.print(" | ERROR| be.yildizgames.common.application.Prelogger | " + e.getMessage());
+        this.print(ERROR + CLASS + message);
+        this.print(ERROR + CLASS + e.getMessage());
         e.printStackTrace(System.out);
     }
 

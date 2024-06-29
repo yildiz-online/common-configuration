@@ -15,10 +15,11 @@
 
 package be.yildizgames.common.configuration;
 
+import be.yildizgames.common.configuration.logger.PreLogger;
+
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 
@@ -64,16 +65,15 @@ public class FileReloadableConfiguration {
                 try {
                     WatchKey key;
                     while (current < this.max && (key = watcher.take()) != null) {
-                        for (WatchEvent<?> event : key.pollEvents()) {
-                            behavior.reload();
-                        }
+                        key.pollEvents().forEach(e -> behavior.reload());
                         key.reset();
                         current++;
                     }
                 } catch (InterruptedException x) {
+                    Thread.currentThread().interrupt();
                 }
             } catch(IOException e){
-                   System.getLogger(this.getClass().getName()).log(System.Logger.Level.ERROR, "", e);
+                   new PreLogger().error("", e);
             }
         }
     }

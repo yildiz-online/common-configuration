@@ -71,7 +71,6 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             Properties[] p = {this.notFoundStrategy.getProperties(), properties};
             Arrays.stream(p).forEach(result::putAll);
             return this.storeConfiguration(result);
-            //FileReloadableConfiguration reloadableConfiguration = new FileReloadableConfiguration(this.configPath);
         } catch (IllegalStateException e) {
             this.preLogger.error("Configuration file not found", e);
             return this.notFoundStrategy.notFound();

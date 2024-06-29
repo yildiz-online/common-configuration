@@ -35,7 +35,7 @@ class FileConfigurationRetrieverTest {
 
     @Test
     void happyFlow() {
-        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
         Assertions.assertNotNull(retriever);
     }
 
@@ -51,7 +51,7 @@ class FileConfigurationRetrieverTest {
         properties.setProperty("logger.configuration.file", new File("").getAbsolutePath() + "/temp/");
         properties.setProperty("logger.disabled", "azerty,qwerty");
         properties.store(new FileWriter("p.properties"),"");
-        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
         Path config = Files.createTempFile("configBS",".properties");
         properties.store(Files.newBufferedWriter(config), "Test properties");
         Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
@@ -63,7 +63,7 @@ class FileConfigurationRetrieverTest {
         properties.setProperty("test", "éèç");
         Path config = Files.createTempFile("configTE",".properties");
         properties.store(Files.newBufferedWriter(config),"");
-        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+        ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
         Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
         Assertions.assertEquals("éèç", result.getProperty("test"));
     }
@@ -99,20 +99,20 @@ class FileConfigurationRetrieverTest {
             Properties properties = new Properties();
             properties.put("value", "test");
             properties.store(Files.newBufferedWriter(config), "Test properties");
-            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
             Properties result = retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=" + config.toString()));
             Assertions.assertEquals("test", result.getProperty("value"));
         }
 
         @Test
         void fileNotFound() {
-            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
             Assertions.assertThrows(IllegalStateException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of(DefaultArgName.CONFIGURATION_FILE + "=invalid/path/config.properties")));
         }
 
         @Test
         void applicationArgsNull() {
-            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
             Assertions.assertThrows(NullPointerException.class, () -> retriever.retrieveFromArgs(null));
         }
 
@@ -122,7 +122,7 @@ class FileConfigurationRetrieverTest {
             Properties properties = new Properties();
             properties.put("value", "test");
             properties.store(Files.newBufferedWriter(config), "Test properties");
-            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
             Assertions.assertThrows(IllegalStateException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of()));
         }
 
@@ -132,7 +132,7 @@ class FileConfigurationRetrieverTest {
             Properties properties = new Properties();
             properties.put("value", "test");
             properties.store(Files.newBufferedWriter(config), "Test properties");
-            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundException());
+            ConfigurationRetriever retriever = new FileConfigurationRetriever(new ConfigurationNotFoundThrow());
             Assertions.assertThrows(IllegalStateException.class, () -> retriever.retrieveFromArgs(ApplicationArgs.of((String[]) null)));
         }
 

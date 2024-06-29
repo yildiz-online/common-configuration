@@ -25,7 +25,7 @@ class ConfigurationRetrieverFactoryTest {
 
     @Test
     void happyFlow() {
-        ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory.fromFile(new ConfigurationNotFoundException());
+        ConfigurationRetriever configurationRetriever = ConfigurationRetrieverFactory.fromFile(new ConfigurationNotFoundThrow());
         Assertions.assertNotNull(configurationRetriever);
     }
 }

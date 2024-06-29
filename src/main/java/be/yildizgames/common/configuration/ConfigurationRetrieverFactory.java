@@ -30,4 +30,8 @@ public class ConfigurationRetrieverFactory {
     public static ConfigurationRetriever fromFile(ConfigurationNotFoundStrategy strategy) {
         return new FileConfigurationRetriever(strategy);
     }
+
+    private ConfigurationRetrieverFactory() {
+        super();
+    }
 }
