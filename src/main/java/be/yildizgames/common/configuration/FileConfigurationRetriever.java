@@ -78,7 +78,11 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
     }
 
     private Properties storeConfiguration(final Properties result) {
-        try {
+        try (var writer = Files.newBufferedWriter(
+                this.configPath,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING,
+                StandardOpenOption.WRITE)) {
             List<String> invalid = new ArrayList<>();
             result.forEach((k, v) -> {
                 if(v.toString().contains("\t")
@@ -106,8 +110,7 @@ class FileConfigurationRetriever implements ConfigurationRetriever {
             if(Files.notExists(dir) || !Files.isDirectory(dir)) {
                 Files.createDirectory(dir);
             }
-            result.store(Files.newBufferedWriter(this.configPath,
-                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE), "Properties");
+            result.store(writer, "Properties");
         } catch (IOException e) {
             this.preLogger.error("Error writing configuration file", e);
         }
