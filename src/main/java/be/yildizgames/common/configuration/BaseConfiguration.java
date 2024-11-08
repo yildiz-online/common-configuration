@@ -48,14 +48,21 @@ public class BaseConfiguration implements LanguageConfiguration {
 
     private final Properties properties;
 
+    private final String file;
+
     public BaseConfiguration(Properties properties) {
         this(properties, List.of(Locale.ENGLISH));
     }
 
-    public BaseConfiguration(Properties properties, List<Locale> supportedLocales) {
+    public BaseConfiguration(Properties properties, String file, List<Locale> supportedLocales) {
         super();
+        this.file = file;
         this.properties = properties;
         this.supportedLocales.addAll(supportedLocales);
+    }
+
+    public BaseConfiguration(Properties properties, List<Locale> supportedLocales) {
+        this(properties, "config/configuration.properties", supportedLocales);
     }
 
     protected final String get(String key) {
@@ -92,7 +99,7 @@ public class BaseConfiguration implements LanguageConfiguration {
     }
 
     protected final void store() {
-        try (var buf = Files.newBufferedWriter(getConfigFile(),
+        try (var buf = Files.newBufferedWriter(Path.of(this.file),
                 StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
             this.properties.store(buf, "Properties");
         } catch (IOException e) {
@@ -133,14 +140,5 @@ public class BaseConfiguration implements LanguageConfiguration {
      */
     public final void setEulaNotAccepted() {
         this.properties.setProperty(EULA_ACCEPTED, "0");
-    }
-
-    /**
-     * Get the path to the configuration file.
-     * This function can be overridden to change the location of the configuration file.
-     * @return The path to the configuration file.
-     */
-    protected Path getConfigFile() {
-        return Path.of("config/configuration.properties");
     }
 }
